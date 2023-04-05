@@ -14,6 +14,7 @@
 		42634E1729DCF5C5006AA945 /* Premier_LeagueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42634E1629DCF5C5006AA945 /* Premier_LeagueTests.swift */; };
 		42634E2129DCF5C5006AA945 /* Premier_LeagueUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42634E2029DCF5C5006AA945 /* Premier_LeagueUITests.swift */; };
 		42634E2329DCF5C5006AA945 /* Premier_LeagueUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42634E2229DCF5C5006AA945 /* Premier_LeagueUITestsLaunchTests.swift */; };
+		42634E3429DCFEAA006AA945 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 42634E3329DCFEAA006AA945 /* CombineMoya */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42634E3429DCFEAA006AA945 /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +145,9 @@
 			dependencies = (
 			);
 			name = "Premier League";
+			packageProductDependencies = (
+				42634E3329DCFEAA006AA945 /* CombineMoya */,
+			);
 			productName = "Premier League";
 			productReference = 42634E0229DCF5C4006AA945 /* Premier League.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +220,9 @@
 				Base,
 			);
 			mainGroup = 42634DF929DCF5C4006AA945;
+			packageReferences = (
+				42634E3229DCFEAA006AA945 /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			productRefGroup = 42634E0329DCF5C4006AA945 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -577,6 +585,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		42634E3229DCFEAA006AA945 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		42634E3329DCFEAA006AA945 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42634E3229DCFEAA006AA945 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 42634DFA29DCF5C4006AA945 /* Project object */;
 }
