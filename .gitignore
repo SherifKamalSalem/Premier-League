@@ -1,0 +1,21 @@
+# Xcode
+#
+# Ignore Xcode per-user config files
+#
+# Xcode 8
+*.xcscmblueprint
+*.xccheckout
+# Xcode 9
+*.xcworkspace
+*.xcuserstate
+# Xcode 10
+xcuserdata/
+# Xcode 11+
+DerivedData/
+.build/
+
+# Swift Package Manager
+#
+# Ignore the Package directory
+#
+Packages/
