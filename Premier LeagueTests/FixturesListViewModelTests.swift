@@ -58,6 +58,23 @@ final class FixturesListViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
     
+    // MARK: - Test Toggle Favorite
+    
+    func testToggleFavoriteAdd() {
+        let fixture = makeMockFixture()
+        let viewModel = makeSUT()
+        viewModel.toggleFavorite(for: fixture)
+        XCTAssertTrue(viewModel.isFavorite(fixture))
+    }
+    
+    func testToggleFavoriteRemove() {
+        let fixture = makeMockFixture()
+        let viewModel = makeSUT()
+        viewModel.favoriteFixturesIds.insert(fixture.id)
+        viewModel.toggleFavorite(for: fixture)
+        XCTAssertFalse(viewModel.isFavorite(fixture))
+    }
+    
     private func makeSUT(stubbedFetchFixturesListResult: Result<FixturesResponse, Error> = .success(FixturesResponse(count: nil, matches: [])), file: StaticString = #file, line: UInt = #line) -> any FixturesListViewModelProtocol {
         let viewModel = FixturesListViewModel(service: MockFixturesListService(stubbedFetchFixturesListResult: stubbedFetchFixturesListResult), userDefaults: MockUserDefaults())
         trackForMemoryLeaks(viewModel, file: file, line: line)
