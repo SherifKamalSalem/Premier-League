@@ -14,5 +14,5 @@ import CombineMoya
 protocol NetworkProtocol: AnyObject {
     associatedtype Endpoint
     
-    func request<T: Decodable>(endpoint: Endpoint, responseType: T.Type) -> AnyPublisher<T, Error>
+    func request<T: Decodable>(endpoint: Endpoint, responseType: T.Type) async throws -> T
 }

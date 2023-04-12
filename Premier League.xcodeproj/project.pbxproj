@@ -19,6 +19,7 @@
 		42615FF529E72CEB002D1A01 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42615FF429E72CEB002D1A01 /* NetworkManager.swift */; };
 		42615FF729E72F46002D1A01 /* FixtureRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42615FF629E72F46002D1A01 /* FixtureRowViewModel.swift */; };
 		42615FF929E73350002D1A01 /* FetchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42615FF829E73350002D1A01 /* FetchState.swift */; };
+		42615FFB29E74977002D1A01 /* Publisher+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42615FFA29E74977002D1A01 /* Publisher+Ext.swift */; };
 		42634E0629DCF5C4006AA945 /* Premier_LeagueApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42634E0529DCF5C4006AA945 /* Premier_LeagueApp.swift */; };
 		42634E0829DCF5C4006AA945 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42634E0729DCF5C4006AA945 /* ContentView.swift */; };
 		42634E0A29DCF5C5006AA945 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42634E0929DCF5C5006AA945 /* Assets.xcassets */; };
@@ -64,6 +65,7 @@
 		42615FF429E72CEB002D1A01 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		42615FF629E72F46002D1A01 /* FixtureRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureRowViewModel.swift; sourceTree = "<group>"; };
 		42615FF829E73350002D1A01 /* FetchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchState.swift; sourceTree = "<group>"; };
+		42615FFA29E74977002D1A01 /* Publisher+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Ext.swift"; sourceTree = "<group>"; };
 		42634E0229DCF5C4006AA945 /* Premier League.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Premier League.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42634E0529DCF5C4006AA945 /* Premier_LeagueApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Premier_LeagueApp.swift; sourceTree = "<group>"; };
 		42634E0729DCF5C4006AA945 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				42A3E73129DE21C400CCC319 /* SecureSettingsItem.swift */,
 				42148E2B29E1C15F00A84D9C /* Date+Extension.swift */,
 				42A2697B29E563F10053B39F /* String+Ext.swift */,
+				42615FFA29E74977002D1A01 /* Publisher+Ext.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				42615FF729E72F46002D1A01 /* FixtureRowViewModel.swift in Sources */,
 				42148E2C29E1C15F00A84D9C /* Date+Extension.swift in Sources */,
 				42A3E71B29DDE86700CCC319 /* API.swift in Sources */,
+				42615FFB29E74977002D1A01 /* Publisher+Ext.swift in Sources */,
 				42148E1E29DF9B9E00A84D9C /* FixturesListViewModel.swift in Sources */,
 				42634E0629DCF5C4006AA945 /* Premier_LeagueApp.swift in Sources */,
 				42615FF529E72CEB002D1A01 /* NetworkManager.swift in Sources */,

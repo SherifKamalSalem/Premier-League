@@ -16,12 +16,12 @@ class MockFixturesListService: Serviceable {
         self.stubbedFetchFixturesListResult = stubbedFetchFixturesListResult
     }
     
-    func fetchFixturesList(competitionId: String) -> AnyPublisher<FixturesResponse, Error> {
+    func fetchFixturesList(competitionId: String) async throws -> Premier_League.FixturesResponse {
         switch stubbedFetchFixturesListResult {
         case .success(let response):
-            return Just(response).setFailureType(to: Error.self).eraseToAnyPublisher()
+            return response
         case .failure(let error):
-            return Fail(error: error).eraseToAnyPublisher()
+            throw error
         }
     }
 }

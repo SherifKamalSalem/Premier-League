@@ -6,56 +6,37 @@
 //
 
 import XCTest
-import Combine
 @testable import Premier_League
 
 final class FixturesListViewModelTests: XCTestCase {
     
     // MARK: - Test Load Fixtures
     
-    func testLoadFixturesSuccess() {
+    func testLoadFixturesSuccess() async throws {
         // Given
         let expectedFixturesByDate = makeMockFixturesByDate()
-        let expectation = XCTestExpectation(description: "Fetch fixtures")
-        var cancellables = Set<AnyCancellable>()
-        
         let viewModel = makeSUT(stubbedFetchFixturesListResult: .success(makeFixturesResponse()))
        
         // When
-        viewModel.loadFixtures()
-        
-        viewModel.state.dropFirst().sink { state in
-            XCTAssertEqual(state, .finished)
-            XCTAssertEqual(viewModel.fixturesByDate.first?.date, expectedFixturesByDate.date)
-            XCTAssertEqual(viewModel.fixturesByDate.first?.fixtures, expectedFixturesByDate.fixtures)
-            expectation.fulfill()
-        }.store(in: &cancellables)
-        
-        wait(for: [expectation], timeout: 1.0)
+        try await viewModel.loadFixtures()
         
         // Then
-        XCTAssertEqual(viewModel.errorMessage.value, "")
+        XCTAssertEqual(viewModel.errorMessage, "")
+        XCTAssertEqual(viewModel.state, .finished)
+        XCTAssertEqual(viewModel.fixturesByDate.first?.date, expectedFixturesByDate.date)
+        XCTAssertEqual(viewModel.fixturesByDate.first?.fixtures, expectedFixturesByDate.fixtures)
     }
     
-    func testLoadFixturesFailure() {
+    func testLoadFixturesFailure() async throws {
         let error = NSError(domain: "Test Error", code: 0, userInfo: nil)
-        let expectation = XCTestExpectation(description: "Fetch fixtures failure")
-        var cancellables = Set<AnyCancellable>()
         let viewModel = makeSUT(stubbedFetchFixturesListResult: .failure(error))
         
         // When
-        viewModel.loadFixtures()
+        try await viewModel.loadFixtures()
         
         // Then
-        XCTAssertEqual(viewModel.state.value, .loading)
-        
-        viewModel.state.dropFirst().sink { state in
-            XCTAssertEqual(state, .showError(error: error))
-            XCTAssertTrue(viewModel.fixturesByDate.isEmpty)
-            expectation.fulfill()
-        }.store(in: &cancellables)
-        
-        wait(for: [expectation], timeout: 1)
+        XCTAssertEqual(viewModel.state, .showError(error: error))
+        XCTAssertTrue(viewModel.fixturesByDate.isEmpty)
     }
     
     // MARK: - Test Toggle Favorite
