@@ -75,6 +75,34 @@ final class FixturesListViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isFavorite(fixture))
     }
     
+    // MARK: - Test Is Favorite
+    
+    func testIsFavoriteTrue() {
+        let fixture = makeMockFixture()
+        let viewModel = makeSUT()
+        
+        viewModel.favoriteFixturesIds.insert(fixture.id)
+        XCTAssertTrue(viewModel.isFavorite(fixture))
+    }
+    
+    func testIsFavoriteFalse() {
+        let fixture = makeMockFixture()
+        let viewModel = makeSUT()
+        
+        XCTAssertFalse(viewModel.isFavorite(fixture))
+    }
+    
+    // MARK: - Test Load Favorite Fixtures
+    
+    func testLoadFavoriteFixtures() {
+        let fixtureIds = [1, 2, 3]
+        let viewModel = makeSUT()
+        
+        viewModel.favoriteFixturesIds = Set(fixtureIds)
+        viewModel.loadFavoriteFixtures()
+        XCTAssertEqual(viewModel.favoriteFixturesIds, Set(fixtureIds))
+    }
+    
     private func makeSUT(stubbedFetchFixturesListResult: Result<FixturesResponse, Error> = .success(FixturesResponse(count: nil, matches: [])), file: StaticString = #file, line: UInt = #line) -> any FixturesListViewModelProtocol {
         let viewModel = FixturesListViewModel(service: MockFixturesListService(stubbedFetchFixturesListResult: stubbedFetchFixturesListResult), userDefaults: MockUserDefaults())
         trackForMemoryLeaks(viewModel, file: file, line: line)
