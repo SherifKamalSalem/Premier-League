@@ -18,6 +18,21 @@ final class FixturesListViewModelTests: XCTestCase {
         trackForMemoryLeaks(viewModel, file: file, line: line)
         return viewModel
     }
+    
+    private func makeMockFixture() -> FixtureRowViewModel {
+        let fixture = Fixture(id: 1, utcDate: DateFormatter.dateFormat("2023-04-15T14:00:00Z") ?? Date(), status: .FINISHED, homeTeam: Team(id: 1, name: "Arsenal"), awayTeam: Team(id: 2, name: "Chelsea"), score: MatchScore(winner: .awayTeam, fullTime: .init(homeTeam: 0, awayTeam: 2), halfTime: .init(homeTeam: nil, awayTeam: nil), extraTime: .init(homeTeam: nil, awayTeam: nil), penalties: .init(homeTeam: nil, awayTeam: nil)))
+        return FixtureRowViewModel(fixture: fixture)
+    }
+//
+    private func makeFixturesResponse() -> FixturesResponse {
+        return FixturesResponse(count: 2, matches: [makeMockFixture().fixtureInstance])
+    }
+//
+    private func makeMockFixturesByDate() -> FixturesByDate {
+
+        return FixturesByDate(date: DateFormatter.dateFormat("2023-04-14T22:00:00Z") ?? Date(), fixtures: [makeMockFixture()])
+
+    }
 }
 
 class MockUserDefaults: UserDefaults {
