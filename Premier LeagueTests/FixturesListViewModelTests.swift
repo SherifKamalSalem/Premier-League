@@ -13,6 +13,30 @@ final class FixturesListViewModelTests: XCTestCase {
     
     // MARK: - Test Load Fixtures
     
+    func testLoadFixturesSuccess() {
+        // Given
+        let expectedFixturesByDate = makeMockFixturesByDate()
+        let expectation = XCTestExpectation(description: "Fetch fixtures")
+        var cancellables = Set<AnyCancellable>()
+        
+        let viewModel = makeSUT(stubbedFetchFixturesListResult: .success(makeFixturesResponse()))
+       
+        // When
+        viewModel.loadFixtures()
+        
+        viewModel.state.dropFirst().sink { state in
+            XCTAssertEqual(state, .finished)
+            XCTAssertEqual(viewModel.fixturesByDate.first?.date, expectedFixturesByDate.date)
+            XCTAssertEqual(viewModel.fixturesByDate.first?.fixtures, expectedFixturesByDate.fixtures)
+            expectation.fulfill()
+        }.store(in: &cancellables)
+        
+        wait(for: [expectation], timeout: 1.0)
+        
+        // Then
+        XCTAssertEqual(viewModel.errorMessage.value, "")
+    }
+    
     private func makeSUT(stubbedFetchFixturesListResult: Result<FixturesResponse, Error> = .success(FixturesResponse(count: nil, matches: [])), file: StaticString = #file, line: UInt = #line) -> any FixturesListViewModelProtocol {
         let viewModel = FixturesListViewModel(service: MockFixturesListService(stubbedFetchFixturesListResult: stubbedFetchFixturesListResult), userDefaults: MockUserDefaults())
         trackForMemoryLeaks(viewModel, file: file, line: line)
