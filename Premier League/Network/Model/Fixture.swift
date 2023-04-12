@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Fixture: Identifiable, Hashable, Decodable {
+struct Fixture: Decodable {
     
     var id: Int
     var utcDate: Date
@@ -20,14 +20,6 @@ struct Fixture: Identifiable, Hashable, Decodable {
     var awayTeam: Team?
     
     var score: MatchScore
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: Fixture, rhs: Fixture) -> Bool {
-        return lhs.id == rhs.id
-    }
 }
 
 enum FixtureStatus: String, Decodable {
