@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import Moya
 
 struct ContentView: View {
+    let provider = MoyaProvider<API>()
+    let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+        FixturesListView(viewModel: FixturesListViewModel(service: FixturesListService(network: NetworkManager(provider: provider, decoder: decoder)), userDefaults: UserDefaults.standard))
     }
 }
 
