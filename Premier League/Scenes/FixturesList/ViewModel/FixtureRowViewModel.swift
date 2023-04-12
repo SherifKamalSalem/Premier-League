@@ -34,12 +34,12 @@ class FixtureRowViewModel: ObservableObject, Identifiable {
         fixture.group
     }
     
-    var homeTeam: Team? {
-        fixture.homeTeam
+    var homeTeamName: String {
+        fixture.homeTeam?.name ?? ""
     }
     
-    var awayTeam: Team? {
-        fixture.awayTeam
+    var awayTeamName: String {
+        fixture.awayTeam?.name ?? ""
     }
     
     var score: MatchScore {
