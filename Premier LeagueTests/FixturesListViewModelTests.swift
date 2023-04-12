@@ -37,6 +37,27 @@ final class FixturesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage.value, "")
     }
     
+    func testLoadFixturesFailure() {
+        let error = NSError(domain: "Test Error", code: 0, userInfo: nil)
+        let expectation = XCTestExpectation(description: "Fetch fixtures failure")
+        var cancellables = Set<AnyCancellable>()
+        let viewModel = makeSUT(stubbedFetchFixturesListResult: .failure(error))
+        
+        // When
+        viewModel.loadFixtures()
+        
+        // Then
+        XCTAssertEqual(viewModel.state.value, .loading)
+        
+        viewModel.state.dropFirst().sink { state in
+            XCTAssertEqual(state, .showError(error: error))
+            XCTAssertTrue(viewModel.fixturesByDate.isEmpty)
+            expectation.fulfill()
+        }.store(in: &cancellables)
+        
+        wait(for: [expectation], timeout: 1)
+    }
+    
     private func makeSUT(stubbedFetchFixturesListResult: Result<FixturesResponse, Error> = .success(FixturesResponse(count: nil, matches: [])), file: StaticString = #file, line: UInt = #line) -> any FixturesListViewModelProtocol {
         let viewModel = FixturesListViewModel(service: MockFixturesListService(stubbedFetchFixturesListResult: stubbedFetchFixturesListResult), userDefaults: MockUserDefaults())
         trackForMemoryLeaks(viewModel, file: file, line: line)
@@ -47,15 +68,15 @@ final class FixturesListViewModelTests: XCTestCase {
         let fixture = Fixture(id: 1, utcDate: DateFormatter.dateFormat("2023-04-15T14:00:00Z") ?? Date(), status: .FINISHED, homeTeam: Team(id: 1, name: "Arsenal"), awayTeam: Team(id: 2, name: "Chelsea"), score: MatchScore(winner: .awayTeam, fullTime: .init(homeTeam: 0, awayTeam: 2), halfTime: .init(homeTeam: nil, awayTeam: nil), extraTime: .init(homeTeam: nil, awayTeam: nil), penalties: .init(homeTeam: nil, awayTeam: nil)))
         return FixtureRowViewModel(fixture: fixture)
     }
-//
+    
     private func makeFixturesResponse() -> FixturesResponse {
         return FixturesResponse(count: 2, matches: [makeMockFixture().fixtureInstance])
     }
-//
+    
     private func makeMockFixturesByDate() -> FixturesByDate {
-
+        
         return FixturesByDate(date: DateFormatter.dateFormat("2023-04-14T22:00:00Z") ?? Date(), fixtures: [makeMockFixture()])
-
+        
     }
 }
 
