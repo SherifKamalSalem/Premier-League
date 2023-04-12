@@ -19,12 +19,15 @@ struct FixturesListView<ViewModel: FixturesListViewModelProtocol>: View {
             content
                 .navigationBarTitle("Fixtures".localized)
                 .navigationBarItems(trailing: toggleFavoritesOnlyButton)
+                .task {
+                    await viewModel.loadFixtures()
+                }
         }
     }
     
     private var content: some View {
         Group {
-            switch viewModel.state.value {
+            switch viewModel.state {
             case .loading:
                 ProgressView()
             case .empty:

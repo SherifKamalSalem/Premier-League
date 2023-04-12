@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 protocol FixturesListViewModelProtocol: AnyObject, ObservableObject {
-    func loadFixtures()
+    func loadFixtures() async
     func toggleFavorite(for fixture: FixtureRowViewModel)
     func loadFavoriteFixtures()
     func shouldShowSection(_ fixturesByDate: FixturesByDate) -> Bool
@@ -19,51 +19,40 @@ protocol FixturesListViewModelProtocol: AnyObject, ObservableObject {
     var fixturesByDate: [FixturesByDate] { get }
     var favoriteFixturesIds: Set<Int> { get set }
     var showFavoritesOnly: Bool { get set }
-    var state: CurrentValueSubject<FetchState, Never> { get set }
-    var errorMessage: CurrentValueSubject<String, Never> { get }
+    var state: FetchState { get set }
+    var errorMessage: String { get }
 }
-
 
 class FixturesListViewModel: FixturesListViewModelProtocol {
     private let service: Serviceable
     private let userDefaults: UserDefaults
-    private var cancellables = Set<AnyCancellable>()
     private let favoriteFixturesKey = "favoriteFixtures"
     
     @Published var fixturesByDate = [FixturesByDate]()
     var favoriteFixturesIds = Set<Int>()
-    var state = CurrentValueSubject<FetchState, Never>(.ideal)
-    var showError = CurrentValueSubject<Bool, Never>(false)
     @Published var showFavoritesOnly = false
-    var errorMessage = CurrentValueSubject<String, Never>("")
+    var errorMessage = ""
+    @Published var state: FetchState = .ideal
     
     init(service: Serviceable, userDefaults: UserDefaults) {
         self.service = service
         self.userDefaults = userDefaults
-        loadFixtures()
         loadFavoriteFixtures()
     }
     
     // I hardcoded the `competitionId` here just for simplicity but it has to be entered by the user
-    func loadFixtures() {
-        self.state.value = .loading
-        service.fetchFixturesList(competitionId: "2021")
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                switch completion {
-                case .failure(let error):
-                    self.updateFixtures(fixturesByDate: [], state: .showError(error: error), errorMessage: error.localizedDescription)
-                case .finished:
-                    break
-                }
-            }, receiveValue: { [weak self] response in
-                guard let self = self else { return }
-                let fixtures = response.matches
-                let fixturesByDate = sortedFixturesByDate(fixtures.map(FixtureRowViewModel.init))
-                self.updateFixtures(fixturesByDate: fixturesByDate, state: fixturesByDate.isEmpty ? .empty : .finished, errorMessage: "")
-            })
-            .store(in: &cancellables)
+    func loadFixtures() async {
+        DispatchQueue.main.async {
+            self.state = .loading
+        }
+        do {
+            let response = try await service.fetchFixturesList(competitionId: "2021")
+            let fixtures = response.matches
+            let fixturesByDate = sortedFixturesByDate(fixtures.map(FixtureRowViewModel.init))
+            updateFixtures(fixturesByDate: fixturesByDate, state: fixturesByDate.isEmpty ? .empty : .finished, errorMessage: "")
+        } catch {
+            updateFixtures(fixturesByDate: [], state: .showError(error: error), errorMessage: error.localizedDescription)
+        }
     }
     
     func toggleFavorite(for fixture: FixtureRowViewModel) {
@@ -134,8 +123,8 @@ class FixturesListViewModel: FixturesListViewModelProtocol {
         state: FetchState,
         errorMessage: String) {
         self.fixturesByDate = fixturesByDate
-        self.state.value = state
-        self.errorMessage.value = errorMessage
+        self.state = state
+        self.errorMessage = errorMessage
     }
     
     func shouldShowSection(_ fixturesByDate: FixturesByDate) -> Bool {

@@ -5,8 +5,8 @@
 //  Created by Sherif Kamal on 12/04/2023.
 //
 
+
 import Foundation
-import CombineMoya
 import Moya
 import Combine
 
@@ -19,8 +19,8 @@ final class NetworkManager<U: TargetType>: NetworkProtocol {
         self.decoder = decoder
     }
     
-    func request<T: Decodable>(endpoint: U, responseType: T.Type) -> AnyPublisher<T, Error> {
-        provider.requestPublisher(endpoint)
+    func request<T: Decodable>(endpoint: U, responseType: T.Type) async throws -> T {
+        try await provider.requestPublisher(endpoint)
             .mapError { $0 as Error }
             .flatMap { response -> AnyPublisher<T, Error> in
                 do {
@@ -34,5 +34,6 @@ final class NetworkManager<U: TargetType>: NetworkProtocol {
                 }
             }
             .eraseToAnyPublisher()
+            .async()
     }
 }
