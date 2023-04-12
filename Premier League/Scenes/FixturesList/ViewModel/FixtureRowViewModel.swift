@@ -58,6 +58,10 @@ class FixtureRowViewModel: ObservableObject, Identifiable {
         return ""
     }
     
+    var fixtureInstance: Fixture {
+        return fixture
+    }
+    
     init(fixture: Fixture) {
         self.fixture = fixture
     }
